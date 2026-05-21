@@ -1,0 +1,36 @@
+name: Daily NH-NL Collector
+
+on:
+  schedule:
+    # 每天 15:05 北京时间（GitHub 使用 UTC）
+    - cron: "5 7 * * 1-5"
+  workflow_dispatch:  # 允许手动运行
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Install dependencies
+        run: |
+          pip install akshare pandas
+
+      - name: Run script
+        run: |
+          python collect.py
+
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add nhnl_history.csv
+          git commit -m "📈 update nhnl data $(date +'%Y-%m-%d')" || echo "No changes"
+          git push
