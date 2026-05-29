@@ -6,6 +6,8 @@ from datetime import datetime
 
 FILE_CSV = "nhnl_history.csv"
 FILE_PNG = "nhnl_chart.png"
+plt.rcParams['font.sans-serif'] = ['SimHei']
+plt.rcParams['font.family'] = 'sans-serif'
 
 def collect_and_plot():
     today = datetime.today().strftime("%Y-%m-%d")
